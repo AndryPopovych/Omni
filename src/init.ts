@@ -5,7 +5,6 @@ import {
   viewport,
   init as initSDK,
   mockTelegramEnv,
-  type ThemeParams,
   retrieveLaunchParams,
   emitEvent,
   miniApp,
@@ -38,13 +37,18 @@ export async function init(options: {
     mockTelegramEnv({
       onEvent(event, next) {
         if (event.name === 'web_app_request_theme') {
-          let tp: ThemeParams = {};
+          // Використовуємо any, щоб уникнути конфлікту між camelCase та snake_case
+          let tp: any = {}; 
+          
           if (firstThemeSent) {
             tp = themeParams.state();
           } else {
             firstThemeSent = true;
-            tp ||= retrieveLaunchParams().tgWebAppThemeParams;
+            // Спроба отримати параметри з лаунч-параметрів або порожній об'єкт
+            tp = retrieveLaunchParams().tgWebAppThemeParams || {};
           }
+          
+          // emitEvent очікує формат Bridge (snake_case), тому ми просто передаємо об'єкт як any
           return emitEvent('theme_changed', { theme_params: tp });
         }
 
