@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { MenuCard } from '../../components/MenuCard/MenuCard';
 
 const menuItems = [

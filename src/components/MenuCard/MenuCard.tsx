@@ -1,4 +1,4 @@
-import React, { ReactNode, FC } from 'react';
+import { ReactNode, FC } from 'react';
 import './MenuCard.css';
 
 export interface MenuCardProps {
