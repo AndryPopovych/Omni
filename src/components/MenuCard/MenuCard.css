@@ -1,0 +1,33 @@
+.menu-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    border: 3px solid #000000;
+    box-shadow: 4px 4px 0px #000000;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+.menu-card:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0px #000000;
+}
+
+.menu-card__icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.menu-card__title {
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #000000;
+}

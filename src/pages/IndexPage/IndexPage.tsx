@@ -1,43 +1,51 @@
-import { Section, Cell, Image, List } from '@telegram-apps/telegram-ui';
-import type { FC } from 'react';
+import React, { FC, useMemo } from 'react';
+import { MenuCard } from '../../components/MenuCard/MenuCard';
 
-import { Link } from '@/components/Link/Link.tsx';
-import { Page } from '@/components/Page.tsx';
-
-import tonSvg from './ton.svg';
+const menuItems = [
+  { title: 'SAVED', color: '#2BD2FF', icon: '♪' },
+  { title: 'ALL', color: '#FF4D4D', icon: '◎' },
+  { title: 'AI', color: '#4DFFB8', icon: '⊕' },
+  { title: 'DEV', color: '#7A4DFF', icon: '©' },
+  { title: 'DESIGN', color: '#FFA64D', icon: '▣' },
+  { title: 'FILES', color: '#FFFF4D', icon: '⊞' },
+  { title: 'GAMES', color: '#FF4DF0', icon: '◇' },
+  { title: 'SETTINGS', color: '#A6FF4D', icon: '⊛' },
+];
 
 export const IndexPage: FC = () => {
+  // Автоматично генеруємо поточну дату у форматі "WEDNESDAY, 05 AUG"
+  const currentDate = useMemo(() => {
+    const date = new Date();
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      day: '2-digit',
+      month: 'short',
+    };
+    return date.toLocaleDateString('en-US', options).replace(',', '');
+  }, []);
+
   return (
-    <Page back={false}>
-      <List>
-        <Section
-          header="Omni welcomes you!!!"
-          footer="You can use these pages to learn more about features, provided by Telegram Mini Apps and other useful projects"
-        >
-          <Link to="/ton-connect">
-            <Cell
-              before={<Image src={tonSvg} style={{ backgroundColor: '#007AFF' }}/>}
-              subtitle="Connect your TON wallet"
-            >
-              TON Connect
-            </Cell>
-          </Link>
-        </Section>
-        <Section
-          header="Application Launch Data"
-          footer="These pages help developer to learn more about current launch information"
-        >
-          <Link to="/init-data">
-            <Cell subtitle="User data, chat information, technical data">Init Data</Cell>
-          </Link>
-          <Link to="/launch-params">
-            <Cell subtitle="Platform identifier, Mini Apps version, etc.">Launch Parameters</Cell>
-          </Link>
-          <Link to="/theme-params">
-            <Cell subtitle="Telegram application palette information">Theme Parameters</Cell>
-          </Link>
-        </Section>
-      </List>
-    </Page>
+    <div className="omni-home">
+      <header className="omni-header">
+        <span className="omni-date">{currentDate}</span>
+        <h1 className="omni-logo">OMNI</h1>
+      </header>
+
+      <main className="omni-grid">
+        {menuItems.map((item) => (
+          <div key={item.title} className="omni-grid-cell">
+            <MenuCard
+              title={item.title}
+              color={item.color}
+              icon={item.icon}
+              onClick={() => {
+                console.log(`Open section: ${item.title}`);
+                // Тут згодом підключимо перехід на окремі сторінки
+              }}
+            />
+          </div>
+        ))}
+      </main>
+    </div>
   );
 };
