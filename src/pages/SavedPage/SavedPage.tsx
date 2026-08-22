@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 import './SavedPage.css';
 
-// Описуємо структуру наших даних
 export interface SavedItem {
   id: string;
   title: string;
@@ -16,20 +15,18 @@ export interface Category {
 }
 
 export const SavedPage: FC = () => {
-  // Тимчасові мокові дані, щоб одразу бачити результат
-  const [categories, setCategories] = useState<Category[]>([
+  // Прибрали setCategories, залишили тільки categories
+  const [categories] = useState<Category[]>([
     { id: '1', name: 'NEURAL NETWORKS', color: '#4DFFB8', items: [] },
     { id: '2', name: 'UI INSPIRATION', color: '#FFA64D', items: [] },
   ]);
 
   const handleAddCategory = () => {
-    // Тут пізніше будемо відкривати модалку для створення категорії
     console.log('Add new category clicked');
   };
 
   return (
     <div className="saved-page">
-      {/* Шапка сторінки */}
       <header className="saved-header">
         <h1 className="saved-title">♪ SAVED</h1>
         <button className="neo-btn-icon" onClick={handleAddCategory}>
@@ -37,7 +34,6 @@ export const SavedPage: FC = () => {
         </button>
       </header>
 
-      {/* Список категорій */}
       <main className="saved-content">
         <div className="category-list">
           {categories.map((category) => (
