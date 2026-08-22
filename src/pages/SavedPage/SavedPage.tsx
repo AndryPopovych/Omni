@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { Header } from '../../components/Header/Header';
 import './SavedPage.css';
 
 export interface SavedItem {
@@ -15,7 +16,6 @@ export interface Category {
 }
 
 export const SavedPage: FC = () => {
-  // Прибрали setCategories, залишили тільки categories
   const [categories] = useState<Category[]>([
     { id: '1', name: 'NEURAL NETWORKS', color: '#4DFFB8', items: [] },
     { id: '2', name: 'UI INSPIRATION', color: '#FFA64D', items: [] },
@@ -27,12 +27,17 @@ export const SavedPage: FC = () => {
 
   return (
     <div className="saved-page">
-      <header className="saved-header">
-        <h1 className="saved-title">♪ SAVED</h1>
-        <button className="neo-btn-icon" onClick={handleAddCategory}>
-          +
-        </button>
-      </header>
+      {/* Використовуємо універсальний Header */}
+      <Header 
+        title="♪ SAVED" 
+        showBack={true} 
+        bgColor="#2BD2FF" 
+        rightElement={
+          <button className="neo-btn-icon" onClick={handleAddCategory}>
+            +
+          </button>
+        }
+      />
 
       <main className="saved-content">
         <div className="category-list">
