@@ -1,4 +1,5 @@
 import { FC, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MenuCard } from '../../components/MenuCard/MenuCard';
 
 const menuItems = [
@@ -13,7 +14,9 @@ const menuItems = [
 ];
 
 export const IndexPage: FC = () => {
-  // Автоматично генеруємо поточну дату у форматі "WEDNESDAY, 05 AUG"
+  const navigate = useNavigate();
+
+  // Автоматично генеруємо поточну дату
   const currentDate = useMemo(() => {
     const date = new Date();
     const options: Intl.DateTimeFormatOptions = {
@@ -39,8 +42,12 @@ export const IndexPage: FC = () => {
               color={item.color}
               icon={item.icon}
               onClick={() => {
-                console.log(`Open section: ${item.title}`);
-                // Тут згодом підключимо перехід на окремі сторінки
+                // Якщо натиснули SAVED — переходимо на сторінку, інакше поки просто логуємо
+                if (item.title === 'SAVED') {
+                  navigate('/saved');
+                } else {
+                  console.log(`Open section: ${item.title}`);
+                }
               }}
             />
           </div>
