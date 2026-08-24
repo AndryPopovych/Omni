@@ -1,4 +1,4 @@
-.saved-page {
+.section-page {
     min-height: 100vh;
     background-color: var(--bg-main);
     display: flex;
@@ -11,103 +11,80 @@
     position: relative;
 }
 
-.neo-btn-icon {
-    width: 40px;
-    height: 40px;
-    background-color: #fff;
-    border: 3px solid #000;
-    box-shadow: 3px 3px 0px #000;
-    font-family: var(--font-main);
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-    padding-bottom: 4px;
-}
-
-.neo-btn-icon:active {
-    transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0px #000;
-}
-
-.saved-content {
+.section-content {
     padding: 20px;
 }
 
-.category-list {
+.section-category-list {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
-.category-card {
+.section-cat-btn {
+    width: 100%;
+    padding: 24px;
+    font-family: var(--font-main);
+    font-size: 20px;
+    font-weight: 900;
     border: 3px solid #000;
-    box-shadow: 4px 4px 0px #000;
-    padding: 20px;
+    box-shadow: 5px 5px 0px #000;
     cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-}
-
-.category-card:active {
-    transform: translate(3px, 3px);
-    box-shadow: 1px 1px 0px #000;
-}
-
-.category-card__header h2 {
-    margin: 0 0 8px 0;
-    font-size: 18px;
-    font-weight: 700;
     text-transform: uppercase;
-}
-
-.category-card__count {
-    font-size: 12px;
-    font-weight: bold;
-    background-color: #fff;
-    border: 2px solid #000;
-    padding: 2px 8px;
-    display: inline-block;
+    text-align: left;
+    transition: transform 0.1s, box-shadow 0.1s;
     color: #000;
 }
 
-/* ============================
-   MODAL STYLES (NEO-BRUTALISM)
-   ============================ */
-
-.neo-modal-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(2px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
+.section-cat-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0px #000;
 }
 
+/* Модалки в розділах (Save / Create) */
 .neo-modal {
-    background-color: #FAF6F0;
-    border: 4px solid #000;
-    box-shadow: 8px 8px 0px #000;
-    padding: 24px;
-    width: 85%;
-    max-width: 340px;
+    color: #000;
+}
+
+.save-modal {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.save-modal h2,
+.save-modal p {
+    color: #000;
+    margin: 0;
+}
+
+.save-options {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 10px;
+    margin: 16px 0;
 }
 
-.neo-modal h2 {
-    margin: 0;
-    font-size: 20px;
+.save-option-btn {
+    padding: 12px;
+    font-family: var(--font-main);
+    font-weight: bold;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
+    cursor: pointer;
+    text-align: left;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    color: #000;
+}
+
+.save-option-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #000;
+}
+
+.cancel-full {
+    width: 100%;
+    background-color: #fff;
+    margin-top: 8px;
 }
 
 .neo-input {
@@ -120,6 +97,11 @@
     background-color: #fff;
     box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.1);
     text-transform: uppercase;
+    color: #000;
+}
+
+.neo-input::placeholder {
+    color: #666;
 }
 
 .neo-input:focus {
@@ -166,6 +148,7 @@
     cursor: pointer;
     text-transform: uppercase;
     transition: transform 0.1s, box-shadow 0.1s;
+    color: #000;
 }
 
 .neo-btn:active {
@@ -179,34 +162,4 @@
 
 .neo-btn.confirm {
     background-color: #A6FF4D;
-}
-
-.empty-state {
-    text-align: center;
-    font-weight: bold;
-    margin-top: 40px;
-    border: 3px dashed #000;
-    padding: 20px;
-}
-
-/* Виправляємо білий текст на світлому фоні */
-.empty-state {
-    text-align: center;
-    font-weight: bold;
-    margin-top: 40px;
-    border: 3px dashed #000;
-    padding: 20px;
-    color: #000;
-    /* <--- Тепер текст буде чорним */
-}
-
-/* Стиль для іконки видалення в шапці */
-.delete-icon {
-    background-color: #FF4D4D;
-    font-size: 20px;
-}
-
-/* Червона кнопка OK для підтвердження видалення */
-.delete-btn-confirm {
-    background-color: #FF4D4D;
 }

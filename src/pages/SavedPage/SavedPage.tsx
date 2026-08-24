@@ -12,7 +12,6 @@ export const SavedPage: FC = () => {
   const [selectedColor, setSelectedColor] = useState('#2BD2FF');
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
   
-  // Стейт для модалки підтвердження видалення категорії
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
   const availableColors = ['#2BD2FF', '#FF4D4D', '#4DFFB8', '#7A4DFF', '#FFA64D', '#FFFF4D', '#FF4DF0'];
@@ -29,7 +28,7 @@ export const SavedPage: FC = () => {
     if (activeCategoryId) {
       removeCategory(activeCategoryId);
       setIsDeleteConfirmOpen(false);
-      setActiveCategoryId(null); // Повертаємось на головну Saved
+      setActiveCategoryId(null);
     }
   };
 
@@ -45,7 +44,6 @@ export const SavedPage: FC = () => {
           onBackClick={() => setActiveCategoryId(null)}
           bgColor={currentCategory?.color}
           rightElement={
-            // Кнопка видалення замість "+"
             <button className="neo-btn-icon delete-icon" onClick={() => setIsDeleteConfirmOpen(true)}>
               🗑
             </button>
@@ -65,12 +63,11 @@ export const SavedPage: FC = () => {
           )}
         </main>
 
-        {/* МОДАЛКА ПІДТВЕРДЖЕННЯ ВИДАЛЕННЯ */}
+        {/* ОНОВЛЕНА, МЕНША МОДАЛКА ВИДАЛЕННЯ */}
         {isDeleteConfirmOpen && (
           <div className="neo-modal-overlay">
-            <div className="neo-modal">
-              <h2>DELETE CATEGORY?</h2>
-              <p>Are you sure you want to delete <strong>{currentCategory?.name}</strong> and all its saved tools? This cannot be undone.</p>
+            <div className="neo-modal delete-modal">
+              <h2 className="delete-modal-title">DELETE {currentCategory?.name}?</h2>
               <div className="neo-modal-actions">
                 <button className="neo-btn cancel" onClick={() => setIsDeleteConfirmOpen(false)}>CANCEL</button>
                 <button className="neo-btn delete-btn-confirm" onClick={handleDeleteCategory}>OK</button>
