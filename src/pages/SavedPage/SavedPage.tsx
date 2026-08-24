@@ -1,39 +1,36 @@
 import { FC, useState } from 'react';
 import { Header } from '../../components/Header/Header';
+import { useSavedStore } from '../../store/savedStore';
 import './SavedPage.css';
 
-export interface SavedItem {
-  id: string;
-  title: string;
-  url?: string;
-}
-
-export interface Category {
-  id: string;
-  name: string;
-  color: string;
-  items: SavedItem[];
-}
-
 export const SavedPage: FC = () => {
-  const [categories] = useState<Category[]>([
-    { id: '1', name: 'NEURAL NETWORKS', color: '#4DFFB8', items: [] },
-    { id: '2', name: 'UI INSPIRATION', color: '#FFA64D', items: [] },
-  ]);
+  // Дістаємо дані та функцію додавання з нашого Zustand стору
+  const { categories, addCategory } = useSavedStore();
+  
+  // Локальний стейт для управління модальним вікном
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [selectedColor, setSelectedColor] = useState('#2BD2FF');
+
+  // Палітра кольорів для нових категорій
+  const availableColors = ['#2BD2FF', '#FF4D4D', '#4DFFB8', '#7A4DFF', '#FFA64D', '#FFFF4D', '#FF4DF0'];
 
   const handleAddCategory = () => {
-    console.log('Add new category clicked');
+    if (newCategoryName.trim()) {
+      addCategory(newCategoryName.toUpperCase(), selectedColor);
+      setNewCategoryName('');
+      setIsModalOpen(false);
+    }
   };
 
   return (
     <div className="saved-page">
-      {/* Використовуємо універсальний Header */}
       <Header 
         title="♪ SAVED" 
         showBack={true} 
         bgColor="#2BD2FF" 
         rightElement={
-          <button className="neo-btn-icon" onClick={handleAddCategory}>
+          <button className="neo-btn-icon" onClick={() => setIsModalOpen(true)}>
             +
           </button>
         }
@@ -55,6 +52,39 @@ export const SavedPage: FC = () => {
           ))}
         </div>
       </main>
+
+      {/* Модальне вікно Neo-Brutalism */}
+      {isModalOpen && (
+        <div className="neo-modal-overlay">
+          <div className="neo-modal">
+            <h2>NEW CATEGORY</h2>
+            
+            <input 
+              type="text" 
+              className="neo-input" 
+              placeholder="CATEGORY NAME" 
+              value={newCategoryName}
+              onChange={(e) => setNewCategoryName(e.target.value)}
+            />
+
+            <div className="color-picker">
+              {availableColors.map(color => (
+                <div 
+                  key={color}
+                  className={`color-swatch ${selectedColor === color ? 'selected' : ''}`}
+                  style={{ backgroundColor: color }}
+                  onClick={() => setSelectedColor(color)}
+                />
+              ))}
+            </div>
+
+            <div className="neo-modal-actions">
+              <button className="neo-btn cancel" onClick={() => setIsModalOpen(false)}>CANCEL</button>
+              <button className="neo-btn confirm" onClick={handleAddCategory}>ADD</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
