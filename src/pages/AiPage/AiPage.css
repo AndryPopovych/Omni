@@ -1,0 +1,84 @@
+.ai-page {
+    min-height: 100vh;
+    background-color: var(--bg-main);
+    display: flex;
+    flex-direction: column;
+    border-left: 3px solid #000;
+    border-right: 3px solid #000;
+    max-width: 480px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.ai-content {
+    padding: 20px;
+}
+
+.ai-category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ai-cat-btn {
+    width: 100%;
+    padding: 24px;
+    font-family: var(--font-main);
+    font-size: 20px;
+    font-weight: 900;
+    border: 3px solid #000;
+    box-shadow: 5px 5px 0px #000;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-align: left;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.ai-cat-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0px #000;
+}
+
+.empty-state {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 40px;
+    border: 3px dashed #000;
+    padding: 20px;
+}
+
+/* Модалка вибору категорії */
+.save-modal {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.save-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 16px 0;
+}
+
+.save-option-btn {
+    padding: 12px;
+    font-family: var(--font-main);
+    font-weight: bold;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
+    cursor: pointer;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.save-option-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #000;
+}
+
+.cancel-full {
+    width: 100%;
+    background-color: #fff;
+    margin-top: 8px;
+}

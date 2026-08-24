@@ -42,9 +42,11 @@ export const IndexPage: FC = () => {
               color={item.color}
               icon={item.icon}
               onClick={() => {
-                // Якщо натиснули SAVED — переходимо на сторінку, інакше поки просто логуємо
+                // Додали умову для переходу на сторінку AI
                 if (item.title === 'SAVED') {
                   navigate('/saved');
+                } else if (item.title === 'AI') {
+                  navigate('/ai');
                 } else {
                   console.log(`Open section: ${item.title}`);
                 }
