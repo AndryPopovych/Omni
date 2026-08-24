@@ -1,57 +1,49 @@
 import { FC, useState } from 'react';
+import { useParams, Navigate } from 'react-router-dom';
 import { Header } from '../../components/Header/Header';
 import { ToolCard, ToolItemProps } from '../../components/ToolCard/ToolCard';
 import { useSavedStore } from '../../store/savedStore';
-import './AiPage.css';
+import { appData } from '../../data/toolsData';
+import './SectionPage.css';
 
-// Мокові дані для категорій та інструментів
-const aiCategories = [
-  { id: 'text', name: 'TEXT & WRITING', color: '#4DFFB8' },
-  { id: 'image', name: 'IMAGE & PHOTO', color: '#FFA64D' },
-  { id: 'video', name: 'VIDEO & ANIMATION', color: '#FF4DF0' },
-];
-
-const mockTools: Record<string, ToolItemProps[]> = {
-  text: [
-    { id: 't1', title: 'ChatGPT', description: 'The most popular conversational AI model by OpenAI.', url: 'https://chat.openai.com' },
-    { id: 't2', title: 'Claude', description: 'Advanced AI assistant by Anthropic, great for large texts.', url: 'https://claude.ai' },
-  ],
-  image: [
-    { id: 'i1', title: 'Midjourney', description: 'Incredible AI image generator accessible via Discord.', url: 'https://midjourney.com' },
-  ],
-  video: [],
-};
-
-export const AiPage: FC = () => {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+export const SectionPage: FC = () => {
+  // Дістаємо назву розділу з URL (наприклад, 'ai', 'dev', 'design')
+  const { sectionId } = useParams<{ sectionId: string }>();
   
-  // Zustand для збереження
+  // Знаходимо дані для цього розділу в нашій базі
+  const currentSection = sectionId ? appData[sectionId.toUpperCase()] : null;
+
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const { categories, saveToolToCategory } = useSavedStore();
   const [toolToSave, setToolToSave] = useState<ToolItemProps | null>(null);
+
+  // Якщо хтось ввів неправильний URL — повертаємо на головну
+  if (!currentSection) {
+    return <Navigate to="/" replace />;
+  }
 
   const handleSaveToCategory = (categoryId: string) => {
     if (toolToSave) {
       saveToolToCategory(categoryId, toolToSave);
-      setToolToSave(null); // Закриваємо модалку після збереження
+      setToolToSave(null);
     }
   };
 
-  // Якщо категорія обрана — показуємо список інструментів
+  // 1. ВІДМАЛЬОВКА СПИСКУ ІНСТРУМЕНТІВ (ЯКЩО ОБРАНА КАТЕГОРІЯ)
   if (activeCategory) {
-    const currentCategoryInfo = aiCategories.find(c => c.id === activeCategory);
-    const toolsList = mockTools[activeCategory] || [];
+    const currentCategoryInfo = currentSection.categories.find(c => c.id === activeCategory);
+    const toolsList = currentSection.tools[activeCategory] || [];
 
     return (
-      <div className="ai-page">
-        {/* Кастомний Header, який замість повернення на головну, скидає категорію */}
-        <header className="omni-universal-header" style={{ backgroundColor: currentCategoryInfo?.color }}>
-          <div className="omni-header-left">
-            <button className="neo-btn-back" onClick={() => setActiveCategory(null)}>{'<'}</button>
-            <h1 className="omni-header-title">{currentCategoryInfo?.name}</h1>
-          </div>
-        </header>
+      <div className="section-page">
+        <Header 
+          title={currentCategoryInfo?.name || 'TOOLS'} 
+          showBack={true} 
+          onBackClick={() => setActiveCategory(null)}
+          bgColor={currentCategoryInfo?.color} 
+        />
 
-        <main className="ai-content">
+        <main className="section-content">
           {toolsList.length > 0 ? (
             toolsList.map(tool => (
               <ToolCard key={tool.id} tool={tool} onSaveClick={setToolToSave} />
@@ -82,7 +74,6 @@ export const AiPage: FC = () => {
                   <p>You don't have any categories. Create one in the SAVED tab first!</p>
                 )}
               </div>
-              
               <button className="neo-btn cancel-full" onClick={() => setToolToSave(null)}>CANCEL</button>
             </div>
           </div>
@@ -91,16 +82,16 @@ export const AiPage: FC = () => {
     );
   }
 
-  // Дефолтний вигляд: Список категорій AI
+  // 2. ВІДМАЛЬОВКА СПИСКУ КАТЕГОРІЙ (ГОЛОВНИЙ ЕКРАН РОЗДІЛУ)
   return (
-    <div className="ai-page">
-      <Header title="⊕ AI TOOLS" showBack={true} bgColor="#4DFFB8" />
-      <main className="ai-content">
-        <div className="ai-category-list">
-          {aiCategories.map(cat => (
+    <div className="section-page">
+      <Header title={currentSection.title} showBack={true} bgColor={currentSection.bgColor} />
+      <main className="section-content">
+        <div className="section-category-list">
+          {currentSection.categories.map(cat => (
             <button 
               key={cat.id}
-              className="ai-cat-btn"
+              className="section-cat-btn"
               style={{ backgroundColor: cat.color }}
               onClick={() => setActiveCategory(cat.id)}
             >

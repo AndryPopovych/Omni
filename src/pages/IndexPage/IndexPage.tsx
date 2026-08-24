@@ -42,13 +42,13 @@ export const IndexPage: FC = () => {
               color={item.color}
               icon={item.icon}
               onClick={() => {
-                // Додали умову для переходу на сторінку AI
                 if (item.title === 'SAVED') {
                   navigate('/saved');
-                } else if (item.title === 'AI') {
-                  navigate('/ai');
+                } else if (item.title === 'SETTINGS') {
+                  console.log('Settings is not ready yet');
                 } else {
-                  console.log(`Open section: ${item.title}`);
+                  // Для ALL, AI, DEV, DESIGN, FILES, GAMES:
+                  navigate(`/section/${item.title.toLowerCase()}`);
                 }
               }}
             />
