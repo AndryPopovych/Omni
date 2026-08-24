@@ -5,11 +5,12 @@ import './Header.css';
 export interface HeaderProps {
   title: string;
   showBack?: boolean;
+  onBackClick?: () => void; // <--- ДОДАЛИ ПРОП
   bgColor?: string;
   rightElement?: ReactNode;
 }
 
-export const Header: FC<HeaderProps> = ({ title, showBack = false, bgColor, rightElement }) => {
+export const Header: FC<HeaderProps> = ({ title, showBack = false, onBackClick, bgColor, rightElement }) => {
   const navigate = useNavigate();
 
   return (
@@ -19,7 +20,8 @@ export const Header: FC<HeaderProps> = ({ title, showBack = false, bgColor, righ
     >
       <div className="omni-header-left">
         {showBack && (
-          <button className="neo-btn-back" onClick={() => navigate(-1)}>
+          // Якщо передали onBackClick — виконуємо його, якщо ні — стандартний navigate(-1)
+          <button className="neo-btn-back" onClick={onBackClick ? onBackClick : () => navigate(-1)}>
             {'<'}
           </button>
         )}

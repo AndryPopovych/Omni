@@ -57,3 +57,8 @@
 .save-btn {
     background-color: #A6FF4D;
 }
+
+.delete-btn {
+    background-color: #FF4D4D;
+    color: #000;
+}

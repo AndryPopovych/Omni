@@ -10,10 +10,11 @@ export interface ToolItemProps {
 
 interface Props {
   tool: ToolItemProps;
-  onSaveClick: (tool: ToolItemProps) => void;
+  onSaveClick?: (tool: ToolItemProps) => void;
+  onDeleteClick?: (tool: ToolItemProps) => void; // <--- ДОДАЛИ ПРОП ДЛЯ ВИДАЛЕННЯ
 }
 
-export const ToolCard: FC<Props> = ({ tool, onSaveClick }) => {
+export const ToolCard: FC<Props> = ({ tool, onSaveClick, onDeleteClick }) => {
   return (
     <div className="neo-tool-card">
       <div className="neo-tool-header">
@@ -30,12 +31,26 @@ export const ToolCard: FC<Props> = ({ tool, onSaveClick }) => {
         >
           OPEN
         </a>
-        <button 
-          className="neo-btn-tool save-btn" 
-          onClick={() => onSaveClick(tool)}
-        >
-          SAVE
-        </button>
+        
+        {/* Рендеримо SAVE тільки якщо передали функцію onSaveClick */}
+        {onSaveClick && (
+          <button 
+            className="neo-btn-tool save-btn" 
+            onClick={() => onSaveClick(tool)}
+          >
+            SAVE
+          </button>
+        )}
+
+        {/* Рендеримо DELETE тільки якщо передали функцію onDeleteClick */}
+        {onDeleteClick && (
+          <button 
+            className="neo-btn-tool delete-btn" 
+            onClick={() => onDeleteClick(tool)}
+          >
+            DELETE
+          </button>
+        )}
       </div>
     </div>
   );
