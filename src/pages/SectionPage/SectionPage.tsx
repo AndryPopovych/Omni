@@ -7,17 +7,20 @@ import { appData } from '../../data/toolsData';
 import './SectionPage.css';
 
 export const SectionPage: FC = () => {
-  // Дістаємо назву розділу з URL (наприклад, 'ai', 'dev', 'design')
   const { sectionId } = useParams<{ sectionId: string }>();
-  
-  // Знаходимо дані для цього розділу в нашій базі
   const currentSection = sectionId ? appData[sectionId.toUpperCase()] : null;
 
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const { categories, saveToolToCategory } = useSavedStore();
+  
+  const { categories, saveToolToCategory, addCategory } = useSavedStore();
   const [toolToSave, setToolToSave] = useState<ToolItemProps | null>(null);
+  
+  // Стейт для керування режимом модалки: 'select' (вибір) або 'create' (створення)
+  const [modalMode, setModalMode] = useState<'select' | 'create'>('select');
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [selectedColor, setSelectedColor] = useState('#2BD2FF');
+  const availableColors = ['#2BD2FF', '#FF4D4D', '#4DFFB8', '#7A4DFF', '#FFA64D', '#FFFF4D', '#FF4DF0'];
 
-  // Якщо хтось ввів неправильний URL — повертаємо на головну
   if (!currentSection) {
     return <Navigate to="/" replace />;
   }
@@ -26,10 +29,30 @@ export const SectionPage: FC = () => {
     if (toolToSave) {
       saveToolToCategory(categoryId, toolToSave);
       setToolToSave(null);
+      setModalMode('select'); // скидаємо стан модалки
     }
   };
 
-  // 1. ВІДМАЛЬОВКА СПИСКУ ІНСТРУМЕНТІВ (ЯКЩО ОБРАНА КАТЕГОРІЯ)
+  const handleCreateAndSave = () => {
+    if (newCategoryName.trim() && toolToSave) {
+      const newId = crypto.randomUUID();
+      // Створюємо категорію зі згенерованим ID
+      addCategory(newCategoryName.toUpperCase(), selectedColor, newId);
+      // Одразу зберігаємо туди інструмент
+      saveToolToCategory(newId, toolToSave);
+      // Закриваємо модалку і очищаємо форму
+      setToolToSave(null);
+      setModalMode('select');
+      setNewCategoryName('');
+    }
+  };
+
+  const closeModal = () => {
+    setToolToSave(null);
+    setModalMode('select');
+    setNewCategoryName('');
+  };
+
   if (activeCategory) {
     const currentCategoryInfo = currentSection.categories.find(c => c.id === activeCategory);
     const toolsList = currentSection.tools[activeCategory] || [];
@@ -53,28 +76,61 @@ export const SectionPage: FC = () => {
           )}
         </main>
 
-        {/* Модалка збереження */}
+        {/* УНІВЕРСАЛЬНА МОДАЛКА ЗБЕРЕЖЕННЯ */}
         {toolToSave && (
-          <div className="neo-modal-overlay" onClick={() => setToolToSave(null)}>
+          <div className="neo-modal-overlay" onClick={closeModal}>
             <div className="neo-modal save-modal" onClick={e => e.stopPropagation()}>
-              <h2>SAVE TO CATEGORY</h2>
-              <p>Where do you want to save <strong>{toolToSave.title}</strong>?</p>
               
-              <div className="save-options">
-                {categories.length > 0 ? categories.map(cat => (
-                  <button 
-                    key={cat.id} 
-                    className="save-option-btn"
-                    style={{ backgroundColor: cat.color }}
-                    onClick={() => handleSaveToCategory(cat.id)}
-                  >
-                    {cat.name}
+              {modalMode === 'select' ? (
+                <>
+                  <h2>SAVE TO CATEGORY</h2>
+                  <p>Where do you want to save <strong>{toolToSave.title}</strong>?</p>
+                  
+                  <div className="save-options">
+                    {categories.map(cat => (
+                      <button 
+                        key={cat.id} 
+                        className="save-option-btn"
+                        style={{ backgroundColor: cat.color }}
+                        onClick={() => handleSaveToCategory(cat.id)}
+                      >
+                        {cat.name}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  <button className="neo-btn confirm" style={{ marginTop: '10px' }} onClick={() => setModalMode('create')}>
+                    + NEW CATEGORY
                   </button>
-                )) : (
-                  <p>You don't have any categories. Create one in the SAVED tab first!</p>
-                )}
-              </div>
-              <button className="neo-btn cancel-full" onClick={() => setToolToSave(null)}>CANCEL</button>
+                  <button className="neo-btn cancel-full" onClick={closeModal}>CANCEL</button>
+                </>
+              ) : (
+                <>
+                  <h2>NEW CATEGORY</h2>
+                  <input 
+                    type="text" 
+                    className="neo-input" 
+                    placeholder="CATEGORY NAME" 
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                  />
+                  <div className="color-picker">
+                    {availableColors.map(color => (
+                      <div 
+                        key={color}
+                        className={`color-swatch ${selectedColor === color ? 'selected' : ''}`}
+                        style={{ backgroundColor: color }}
+                        onClick={() => setSelectedColor(color)}
+                      />
+                    ))}
+                  </div>
+                  <div className="neo-modal-actions">
+                    <button className="neo-btn cancel" onClick={() => setModalMode('select')}>BACK</button>
+                    <button className="neo-btn confirm" onClick={handleCreateAndSave}>SAVE</button>
+                  </div>
+                </>
+              )}
+
             </div>
           </div>
         )}
@@ -82,7 +138,6 @@ export const SectionPage: FC = () => {
     );
   }
 
-  // 2. ВІДМАЛЬОВКА СПИСКУ КАТЕГОРІЙ (ГОЛОВНИЙ ЕКРАН РОЗДІЛУ)
   return (
     <div className="section-page">
       <Header title={currentSection.title} showBack={true} bgColor={currentSection.bgColor} />

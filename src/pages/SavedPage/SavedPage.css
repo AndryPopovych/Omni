@@ -188,3 +188,25 @@
     border: 3px dashed #000;
     padding: 20px;
 }
+
+/* Виправляємо білий текст на світлому фоні */
+.empty-state {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 40px;
+    border: 3px dashed #000;
+    padding: 20px;
+    color: #000;
+    /* <--- Тепер текст буде чорним */
+}
+
+/* Стиль для іконки видалення в шапці */
+.delete-icon {
+    background-color: #FF4D4D;
+    font-size: 20px;
+}
+
+/* Червона кнопка OK для підтвердження видалення */
+.delete-btn-confirm {
+    background-color: #FF4D4D;
+}

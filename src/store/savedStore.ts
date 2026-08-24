@@ -17,9 +17,10 @@ export interface SavedCategory {
 
 interface SavedStore {
   categories: SavedCategory[];
-  addCategory: (name: string, color: string) => void;
+  addCategory: (name: string, color: string, id?: string) => void; // <--- Додали необов'язковий id
+  removeCategory: (categoryId: string) => void; // <--- НОВА ФУНКЦІЯ
   saveToolToCategory: (categoryId: string, tool: ToolItem) => void;
-  removeToolFromCategory: (categoryId: string, toolId: string) => void; // <--- НОВЕ
+  removeToolFromCategory: (categoryId: string, toolId: string) => void;
 }
 
 export const useSavedStore = create<SavedStore>()(
@@ -29,12 +30,18 @@ export const useSavedStore = create<SavedStore>()(
         { id: '1', name: 'NEURAL NETWORKS', color: '#4DFFB8', items: [] },
         { id: '2', name: 'UI INSPIRATION', color: '#FFA64D', items: [] },
       ],
-      addCategory: (name, color) =>
+      // Якщо id передано - використовуємо його, інакше генеруємо новий
+      addCategory: (name, color, id) =>
         set((state) => ({
           categories: [
             ...state.categories,
-            { id: crypto.randomUUID(), name, color, items: [] },
+            { id: id || crypto.randomUUID(), name, color, items: [] },
           ],
+        })),
+      // <--- ФУНКЦІЯ ВИДАЛЕННЯ КАТЕГОРІЇ
+      removeCategory: (categoryId) =>
+        set((state) => ({
+          categories: state.categories.filter((cat) => cat.id !== categoryId),
         })),
       saveToolToCategory: (categoryId, tool) =>
         set((state) => ({
@@ -44,7 +51,6 @@ export const useSavedStore = create<SavedStore>()(
               : cat
           ),
         })),
-      // <--- НОВА ФУНКЦІЯ ВИДАЛЕННЯ
       removeToolFromCategory: (categoryId, toolId) =>
         set((state) => ({
           categories: state.categories.map((cat) =>

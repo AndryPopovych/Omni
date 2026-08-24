@@ -5,12 +5,15 @@ import { ToolCard } from '../../components/ToolCard/ToolCard';
 import './SavedPage.css';
 
 export const SavedPage: FC = () => {
-  const { categories, addCategory, removeToolFromCategory } = useSavedStore(); // Дістаємо функцію видалення
+  const { categories, addCategory, removeToolFromCategory, removeCategory } = useSavedStore();
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [selectedColor, setSelectedColor] = useState('#2BD2FF');
-  const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null); // Стейт відкритої категорії
+  const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
+  
+  // Стейт для модалки підтвердження видалення категорії
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
   const availableColors = ['#2BD2FF', '#FF4D4D', '#4DFFB8', '#7A4DFF', '#FFA64D', '#FFFF4D', '#FF4DF0'];
 
@@ -22,7 +25,14 @@ export const SavedPage: FC = () => {
     }
   };
 
-  // ЯКЩО ВІДКРИТА КОНКРЕТНА КАТЕГОРІЯ
+  const handleDeleteCategory = () => {
+    if (activeCategoryId) {
+      removeCategory(activeCategoryId);
+      setIsDeleteConfirmOpen(false);
+      setActiveCategoryId(null); // Повертаємось на головну Saved
+    }
+  };
+
   if (activeCategoryId) {
     const currentCategory = categories.find(c => c.id === activeCategoryId);
     const toolsList = currentCategory?.items || [];
@@ -32,15 +42,21 @@ export const SavedPage: FC = () => {
         <Header 
           title={currentCategory?.name || 'CATEGORY'} 
           showBack={true} 
-          onBackClick={() => setActiveCategoryId(null)} // Повертає нас до списку категорій
-          bgColor={currentCategory?.color} 
+          onBackClick={() => setActiveCategoryId(null)}
+          bgColor={currentCategory?.color}
+          rightElement={
+            // Кнопка видалення замість "+"
+            <button className="neo-btn-icon delete-icon" onClick={() => setIsDeleteConfirmOpen(true)}>
+              🗑
+            </button>
+          }
         />
         <main className="saved-content">
           {toolsList.length > 0 ? (
             toolsList.map(tool => (
               <ToolCard 
                 key={tool.id} 
-                tool={tool as any} // приводимо тип
+                tool={tool as any}
                 onDeleteClick={(t) => removeToolFromCategory(currentCategory!.id, t.id)} 
               />
             ))
@@ -48,11 +64,24 @@ export const SavedPage: FC = () => {
             <div className="empty-state">NO SAVED TOOLS HERE YET.</div>
           )}
         </main>
+
+        {/* МОДАЛКА ПІДТВЕРДЖЕННЯ ВИДАЛЕННЯ */}
+        {isDeleteConfirmOpen && (
+          <div className="neo-modal-overlay">
+            <div className="neo-modal">
+              <h2>DELETE CATEGORY?</h2>
+              <p>Are you sure you want to delete <strong>{currentCategory?.name}</strong> and all its saved tools? This cannot be undone.</p>
+              <div className="neo-modal-actions">
+                <button className="neo-btn cancel" onClick={() => setIsDeleteConfirmOpen(false)}>CANCEL</button>
+                <button className="neo-btn delete-btn-confirm" onClick={handleDeleteCategory}>OK</button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
 
-  // ЯКЩО НЕМАЄ ВІДКРИТОЇ КАТЕГОРІЇ (ГОЛОВНИЙ ЕКРАН SAVED)
   return (
     <div className="saved-page">
       <Header 
@@ -71,7 +100,7 @@ export const SavedPage: FC = () => {
               key={category.id} 
               className="category-card"
               style={{ backgroundColor: category.color }}
-              onClick={() => setActiveCategoryId(category.id)} // <--- ТЕПЕР КАРТКА КЛІКАБЕЛЬНА
+              onClick={() => setActiveCategoryId(category.id)}
             >
               <div className="category-card__header">
                 <h2>{category.name}</h2>
