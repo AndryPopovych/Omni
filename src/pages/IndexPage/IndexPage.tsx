@@ -1,6 +1,8 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useEffect } from 'react'; // <--- ДОДАЛИ useEffect
 import { useNavigate } from 'react-router-dom';
 import { MenuCard } from '../../components/MenuCard/MenuCard';
+import { useThemeStore } from '../../store/themeStore'; // <--- ДОДАЛИ СТОР
+import '../../theme.css'; // <--- ПІДКЛЮЧАЄМО НАШУ МАГІЮ CSS
 
 const menuItems = [
   { title: 'SAVED', color: '#2BD2FF', icon: '♪' },
@@ -15,8 +17,13 @@ const menuItems = [
 
 export const IndexPage: FC = () => {
   const navigate = useNavigate();
+  const { theme } = useThemeStore(); // Дістаємо поточну тему
 
-  // Автоматично генеруємо поточну дату
+  // При завантаженні головної сторінки гарантовано застосовуємо тему до HTML
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
   const currentDate = useMemo(() => {
     const date = new Date();
     const options: Intl.DateTimeFormatOptions = {
@@ -45,9 +52,8 @@ export const IndexPage: FC = () => {
                 if (item.title === 'SAVED') {
                   navigate('/saved');
                 } else if (item.title === 'SETTINGS') {
-                  console.log('Settings is not ready yet');
+                  navigate('/settings'); // <--- РОЗБЛОКУВАЛИ ПЕРЕХІД
                 } else {
-                  // Для ALL, AI, DEV, DESIGN, FILES, GAMES:
                   navigate(`/section/${item.title.toLowerCase()}`);
                 }
               }}

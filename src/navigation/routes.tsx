@@ -7,6 +7,7 @@ import { ThemeParamsPage } from '@/pages/ThemeParamsPage.tsx';
 import { TONConnectPage } from '@/pages/TONConnectPage/TONConnectPage';
 import { SavedPage } from '@/pages/SavedPage/SavedPage';
 import { SectionPage } from '@/pages/SectionPage/SectionPage';
+import { SettingsPage } from '@/pages/SettingsPage/SettingsPage';
 
 interface Route {
   path: string;
@@ -18,6 +19,7 @@ interface Route {
 export const routes: Route[] = [
   { path: '/', Component: IndexPage },
   { path: '/saved', Component: SavedPage, title: 'Saved' },
+  { path: '/settings', Component: SettingsPage, title: 'Settings' },
   { path: '/section/:sectionId', Component: SectionPage },
   { path: '/init-data', Component: InitDataPage, title: 'Init Data' },
   { path: '/theme-params', Component: ThemeParamsPage, title: 'Theme Params' },

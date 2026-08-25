@@ -1,0 +1,168 @@
+/* src/theme.css */
+
+:root {
+    --bg-main: #FAF6F0;
+    --border-main: #000000;
+    --text-main: #000000;
+}
+
+[data-theme='white-min'] {
+    --bg-main: #FFFFFF;
+    --border-main: #000000;
+    --text-main: #000000;
+}
+
+[data-theme='dark-min'] {
+    --bg-main: #1A1A1A;
+    /* Темно-сірий фон, щоб чорні тіні було видно */
+    --border-main: #FFFFFF;
+    /* Білі контури */
+    --text-main: #FFFFFF;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* =========================================
+   DARK MINIMALISM: ІНВЕРСІЯ ЛІНІЙ ТА ТЕКСТУ
+   ========================================= */
+[data-theme='dark-min'] *,
+[data-theme='white-min'] * {
+    border-color: var(--border-main) !important;
+}
+
+[data-theme='dark-min'] h1,
+[data-theme='dark-min'] h2,
+[data-theme='dark-min'] h3,
+[data-theme='dark-min'] p,
+[data-theme='dark-min'] span,
+[data-theme='dark-min'] a,
+[data-theme='dark-min'] div:not(.color-swatch),
+[data-theme='dark-min'] button,
+[data-theme='dark-min'] input,
+[data-theme='dark-min'] select {
+    color: var(--text-main) !important;
+}
+
+[data-theme='white-min'] h1,
+[data-theme='white-min'] h2,
+[data-theme='white-min'] h3,
+[data-theme='white-min'] p,
+[data-theme='white-min'] span,
+[data-theme='white-min'] a,
+[data-theme='white-min'] div:not(.color-swatch),
+[data-theme='white-min'] button,
+[data-theme='white-min'] input,
+[data-theme='white-min'] select {
+    color: var(--text-main) !important;
+}
+
+/* Затемнення фону модалок */
+[data-theme='dark-min'] .neo-modal-overlay {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme='white-min'] .neo-modal-overlay {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+
+/* =========================================
+   ВИДАЛЕННЯ КОЛЬОРІВ ДЛЯ МІНІМАЛІСТИЧНИХ ТЕМ
+   ========================================= */
+
+/* White Minimalism */
+[data-theme='white-min'] [style*="background-color"]:not(.color-swatch),
+[data-theme='white-min'] .neo-btn,
+[data-theme='white-min'] .neo-btn-tool,
+[data-theme='white-min'] .neo-btn-icon,
+[data-theme='white-min'] .neo-btn-back,
+[data-theme='white-min'] .neo-input,
+[data-theme='white-min'] .neo-select,
+[data-theme='white-min'] .neo-modal {
+    background-color: #FFFFFF !important;
+}
+
+/* Dark Minimalism */
+[data-theme='dark-min'] [style*="background-color"]:not(.color-swatch),
+[data-theme='dark-min'] .neo-btn,
+[data-theme='dark-min'] .neo-btn-tool,
+[data-theme='dark-min'] .neo-btn-icon,
+[data-theme='dark-min'] .neo-btn-back,
+[data-theme='dark-min'] .neo-input,
+[data-theme='dark-min'] .neo-select,
+[data-theme='dark-min'] .neo-modal {
+    background-color: #000000 !important;
+    /* Чорні елементи на темно-сірому фоні */
+}
+
+
+/* =========================================
+   ПЕРЕФАРБУВАННЯ ТІНЕЙ
+   ========================================= */
+/* Dark Minimalism */
+[data-theme='dark-min'] .neo-btn,
+[data-theme='dark-min'] .neo-btn-tool,
+[data-theme='dark-min'] .neo-btn-icon,
+[data-theme='dark-min'] .neo-btn-back,
+[data-theme='dark-min'] .neo-modal,
+[data-theme='dark-min'] .category-card,
+[data-theme='dark-min'] .section-cat-btn,
+[data-theme='dark-min'] .save-option-btn,
+[data-theme='dark-min'] .neo-tool-card,
+[data-theme='dark-min'] .neo-input,
+[data-theme='dark-min'] .neo-select,
+[data-theme='dark-min'] .omni-grid-cell>div,
+[data-theme='dark-min'] .theme-btn {
+    box-shadow: 4px 4px 0px var(--border-main) !important;
+}
+
+[data-theme='dark-min'] .neo-btn:active,
+[data-theme='dark-min'] .neo-btn-tool:active,
+[data-theme='dark-min'] .neo-btn-icon:active,
+[data-theme='dark-min'] .neo-btn-back:active,
+[data-theme='dark-min'] .category-card:active,
+[data-theme='dark-min'] .section-cat-btn:active,
+[data-theme='dark-min'] .save-option-btn:active,
+[data-theme='dark-min'] .omni-grid-cell>div:active,
+[data-theme='dark-min'] .theme-btn:active {
+    box-shadow: 1px 1px 0px var(--border-main) !important;
+}
+
+/* White Minimalism (гарантуємо чорні тіні) */
+[data-theme='white-min'] .neo-btn,
+[data-theme='white-min'] .neo-btn-tool,
+[data-theme='white-min'] .neo-btn-icon,
+[data-theme='white-min'] .neo-btn-back,
+[data-theme='white-min'] .neo-modal,
+[data-theme='white-min'] .category-card,
+[data-theme='white-min'] .section-cat-btn,
+[data-theme='white-min'] .save-option-btn,
+[data-theme='white-min'] .neo-tool-card,
+[data-theme='white-min'] .neo-input,
+[data-theme='white-min'] .neo-select,
+[data-theme='white-min'] .omni-grid-cell>div,
+[data-theme='white-min'] .theme-btn {
+    box-shadow: 4px 4px 0px var(--border-main) !important;
+}
+
+[data-theme='white-min'] .neo-btn:active,
+[data-theme='white-min'] .neo-btn-tool:active,
+[data-theme='white-min'] .neo-btn-icon:active,
+[data-theme='white-min'] .neo-btn-back:active,
+[data-theme='white-min'] .category-card:active,
+[data-theme='white-min'] .section-cat-btn:active,
+[data-theme='white-min'] .save-option-btn:active,
+[data-theme='white-min'] .omni-grid-cell>div:active,
+[data-theme='white-min'] .theme-btn:active {
+    box-shadow: 1px 1px 0px var(--border-main) !important;
+}
+
+/* Фікс для активної кнопки в налаштуваннях (щоб не пропадала рамка) */
+[data-theme='dark-min'] .theme-btn.active,
+[data-theme='white-min'] .theme-btn.active {
+    border-width: 4px !important;
+}

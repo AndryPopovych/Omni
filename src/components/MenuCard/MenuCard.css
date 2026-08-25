@@ -31,3 +31,8 @@
     letter-spacing: 1px;
     color: #000000;
 }
+
+.neo-menu-card h2,
+.neo-menu-card span {
+    color: inherit;
+}
